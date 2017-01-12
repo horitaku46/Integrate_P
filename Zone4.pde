@@ -2,6 +2,7 @@
 
 // 獲得色
 public enum DetectedColorType {
+  PREV_DETECTED,
   DARK_GREEN,
   GLAY,
   PURPLE,
@@ -20,9 +21,6 @@ public class Zone4 extends ZumoInfo {
   // 画面構成の設定
   @Override
   public void display() {
-    // 前描画をリセット
-    this.prevDrawReset();
-    
     // 背景を白色にリセット
     this.resetZoneView();
     
@@ -52,9 +50,10 @@ public class Zone4 extends ZumoInfo {
   
   // 検知した色の名前を返す
   private String detectColorName() {
-    
-    if ( detectColor_G == DetectedColorType.DARK_GREEN.getNumber() ) {
-      return "深緑";
+    if ( detectColor_G == DetectedColorType.PREV_DETECTED.getNumber() ) {
+      return "認識前";
+    } else if ( detectColor_G == DetectedColorType.DARK_GREEN.getNumber() ) {
+      return "深緑"; 
     } else if ( detectColor_G == DetectedColorType.GLAY.getNumber() ) {
       return "灰色";
     } else if ( detectColor_G == DetectedColorType.PURPLE.getNumber() ) {
@@ -72,7 +71,9 @@ public class Zone4 extends ZumoInfo {
   
   // 獲得した色の情報を背景色
   private void drawSetBackgroundColor() {
-    if ( detectColor_G == DetectedColorType.DARK_GREEN.ordinal() ) {
+    if ( detectColor_G == DetectedColorType.PREV_DETECTED.ordinal() ) {
+      this.setBackgroundColor(255, 255, 255);
+    } else if ( detectColor_G == DetectedColorType.DARK_GREEN.ordinal() ) {
       this.setBackgroundColor(6, 16, 6);
     } else if ( detectColor_G == DetectedColorType.GLAY.ordinal() ) {
       this.setBackgroundColor(72, 92, 72);

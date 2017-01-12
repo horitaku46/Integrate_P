@@ -19,22 +19,19 @@ public final class SettingConst {
 }
 
 
-// グローバル変数
 int zoneNumber_G, mode_G;
 int sec_G; // 経過時間（秒）
 int max_r_G, max_g_G, max_b_G, min_r_G, min_g_G, min_b_G; // RGBキャリブレーション値
-int max_x_G, max_y_G, min_x_G, min_y_G; // 地磁気センサキャリブレーション値
+float max_x_G, max_y_G, min_x_G, min_y_G; // 地磁気センサキャリブレーション値
 int red_G, green_G, blue_G; // RGB
-int motorL_G, motorR_G; // モーターの左右回転速度
-int direction_G; // Zumoの方向（0~360）
+float direction_G; // Zumoの方向（0~360）
 
 // Zone4
 int detectColor_G; // ポイントで検知した色
 
 
-// オブジェクトのインスタンス
 Serial port;
-ZumoInfo zumoInfo; 
+ZumoInfo zumoInfo;
 Zone4 zone4;
 Zone6 zone6;
 
@@ -57,7 +54,7 @@ void setup() {
   // シリアルポートの設定
   //port = new Serial(this, SettingConst.SERIAL_COM_PORT, SettingConst.SERIAL_COM_BAUND_RATE);
   
-  // 各オブジェクトの生成
+  // 各オブジェクトの生成.
   zumoInfo = new ZumoInfo();
   zone4 = new Zone4();
   zone6 = new Zone6();
@@ -68,7 +65,7 @@ void setup() {
 // 描画関数
 void draw() {
   // 再現用のテストデータを更新
-  //updateTestData();
+  updateTestData();
   
   // Zumo情報の描画
   zumoInfo.display();
@@ -163,10 +160,10 @@ int mapRGB(int rgb) {
 // Arduinoから受信する関数
 void serialEvent(Serial p) {
   
-  int h, l;
+  int h, l, d;
   
   // 受け取れるデータの個数
-  if ( p.available() >= 34 ) {
+  if ( p.available() >= 30 ) {
     if ( p.read() == 'H' ) {
       
       zoneNumber_G = p.read();
@@ -214,55 +211,46 @@ void serialEvent(Serial p) {
       // 地磁気センサのキャリブレーション値
       h = p.read();
       l = p.read(); 
-      max_x_G = (int)((h << 8) + l);
-      if ( max_x_G > 32767 ) {
-        max_x_G -= 65536;
+      d = (h << 8) + l;
+      if ( d > 32767 ) {
+        d -= 65536;
       }
+      max_x_G = (float)d / 100.0;
       h = p.read(); 
-      l = p.read(); 
-      max_y_G = (int)((h << 8) + l);
-      if (max_y_G > 32767) {
-        max_y_G -= 65536;
+      l = p.read();
+      d = (h << 8) + l;
+      if ( d > 32767 ) {
+        d -= 65536;
       }
+      max_y_G = (float)d / 100.0;
       h = p.read(); 
-      l = p.read(); 
-      min_x_G = (int)((h << 8) + l);
-      if (min_x_G > 32767) {
-        min_x_G -= 65536;
+      l = p.read();
+      d = (h << 8) + l;
+      if ( d > 32767 ) {
+        d -= 65536;
       }
-      h = p.read(); 
-      l = p.read(); 
-      min_y_G = (int)((h << 8) + l);
-      if (min_y_G > 32767) {
-        min_y_G -= 65536;
+      min_x_G = (float)d / 100.0;
+      h = p.read();
+      l = p.read();
+      d = (h << 8) + l;
+      if ( d > 32767 ) {
+        d -= 65536;
       }
+      min_y_G = (float)d / 100.0;
       
       // RGB(255まで)
       red_G = mapRGB(p.read());
       green_G = mapRGB(p.read());
       blue_G = mapRGB(p.read());
       
-      // モーターの回転速度
-      h = p.read();
-      l = p.read();
-      motorL_G = (int)((h << 8) + l);
-      if ( motorL_G > 32767 ) {
-        motorL_G -= 65536;
-      }
-      h = p.read(); 
-      l = p.read(); 
-      motorR_G = (int)((h << 8) + l); 
-      if ( motorR_G > 32767) {
-        motorR_G -= 65536;
-      }
-      
       // Zumoの方向
       h = p.read();
       l = p.read();
-      direction_G = (int)((h << 8) + l);
-      if (direction_G > 32767) {
-        direction_G -= 65536;
+      d = (h << 8) + l;
+      if ( d > 32767 ) {
+        d -= 65536;
       }
+      direction_G = (float)d / 100.0;
       
       // Zone4でのポイントで検知した色
       detectColor_G = p.read();
