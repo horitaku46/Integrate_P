@@ -108,6 +108,7 @@ void draw() {
 
 // 動きを再現するためのテストデータ関数
 boolean isIncZoneNumber = false;
+boolean isIncDetectColor = false;
 void updateTestData() {
   // テストセッティング
   mode_G = 2;
@@ -144,8 +145,19 @@ void updateTestData() {
   green_G = (int)random(255.0);
   blue_G = (int)random(255.0);
   
+  // 5秒ごとにポイントカラーをインクリメント
+  //if ( isIncDetectColor && sec_G % 5 == 0 ) {
+  //  detectColor_G++;
+  //  isIncDetectColor = false;
+  //} else if ( !isIncDetectColor && sec_G % 5 == 4 ) { //<>//
+  //  isIncDetectColor = true;
+  //  if ( detectColor_G == 5 ) {
+  //    detectColor_G = 0;
+  //  }
+  //}
+  
   // ポイントで検知した色に乱数を代入
-  detectColor_G = (int)random(5.0);
+  detectColor_G = (int)random(6.0);
 }
 
 
@@ -153,7 +165,7 @@ void updateTestData() {
 // RGB値を255までマッピング
 int mapRGB(int rgb) {
   return (int)map(rgb, 0, 100, 0, 255);
-} //<>//
+}
 
 
 

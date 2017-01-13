@@ -11,7 +11,7 @@ public class Zone6 extends ZumoInfo {
   
   static final float FIRST_START_X = 450.0; // 最初のx軸起点
   static final float FIRST_START_Y = 550.0; // 最初のy軸起点
-  private float radius_distance_value = 1.2; // 三角関数の半径
+  private float radius_distance_value = 1.0; // 三角関数の半径
   private float xPrev, yPrev; // 前回の起点
   private int redCount = 0; // 赤色を通過した回数
   
@@ -54,13 +54,13 @@ public class Zone6 extends ZumoInfo {
       // 赤色を通過した回数をインクリメント
       this.redCount++;
       // 赤色の場合の半径を設定
-      radius_distance_value = 3.0;
+      radius_distance_value = 2.5;
       
     } else {
       // 描画色を青色
       strokeColorType = StrokeColorType.BLUE;
       // 青色の場合の半径を設定
-      radius_distance_value = 1.5;
+      radius_distance_value = 1.0;
     }
     
     if ( zoneNumber_G == 6 && mode_G == 2 && this.redCount < 35 ) {
@@ -110,9 +110,6 @@ public class Zone6 extends ZumoInfo {
     // 点の大きさ
     strokeWeight(8);
     
-    // 点の色を現在のRGB値に
-    //stroke(red_G, green_G, blue_G);
-    
     // 赤と青の場合で点の色を変更
     switch(strokeColorType) {
     case RED:
@@ -128,8 +125,6 @@ public class Zone6 extends ZumoInfo {
       break;
     }
     
-    // 点をプロット
-    //point(xPlot, yPlot);
     // 線を描画
     line(0.0, 0.0, xPlot, yPlot);
     
