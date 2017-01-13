@@ -2,7 +2,7 @@
 
 public final class ZoneInfoConst {
   // 描画するテキストの表示Y軸
-  static final int TEXT_START_Y_POS = 210;
+  static final int TEXT_START_Y_POS = 190;
   // 描画するテキストサイズ
   static final int TEXT_SIZE = 18;
   // テキスト間隔値
@@ -22,7 +22,13 @@ public enum ZumoInfoType {
   // 経過時間
   MS_TIME,
   // Zumoの方角
-  DIRECTION
+  DIRECTION,
+  // Red値
+  RED,
+  // Green値
+  GREEN,
+  // Blue値
+  BLUE
 }
 
 
@@ -31,7 +37,7 @@ public class ZumoInfo extends ExtensionMethods {
   // 各ゾーンにドットするXY軸(Zone1からZone6まで)
   private int[][] redDotPlotPosArray = {{58, 50}, {142, 50}, {237, 60}, {237, 155}, {146, 155}, {63, 155}};
   // 描画する情報配列
-  private String[] infoNameArray = {"ゾーン名", "モード", "経過時間", "方角"};
+  private String[] infoNameArray = {"ゾーン名", "モード", "経過時間", "方角", "RED値", "GREEN値", "BLUE値"};
   
   // ゾーン全体画像
   private PImage zoneImage;
@@ -94,8 +100,8 @@ public class ZumoInfo extends ExtensionMethods {
       if ( zoneNumber_G != 0 && zoneNumber_G != 7 ) {
         // 点の大きさ
         strokeWeight(50);
-        // 点の色を赤
-        this.strokeRed();
+        // 点の色を現在取得している色
+        stroke(red_G, green_G, blue_G);
         // 点をプロット
         point(this.redDotPlotPosArray[zoneNumber_G - 1][0], this.redDotPlotPosArray[zoneNumber_G - 1][1]);
         // 元の点の大きさに戻す
@@ -150,6 +156,15 @@ public class ZumoInfo extends ExtensionMethods {
       } else if ( index == ZumoInfoType.DIRECTION.ordinal() ) {
         String dirName = this.makeDirectionName();
         text(dirName, ZoneInfoConst.INFO_NAME_RIGHT_X, yPos);
+        
+      } else if ( index == ZumoInfoType.RED.ordinal() ) {
+        text(red_G, ZoneInfoConst.INFO_NAME_RIGHT_X, yPos);
+        
+      } else if ( index == ZumoInfoType.GREEN.ordinal() ) {
+        text(green_G, ZoneInfoConst.INFO_NAME_RIGHT_X, yPos);
+        
+      } else if ( index == ZumoInfoType.BLUE.ordinal() ) {
+        text(blue_G, ZoneInfoConst.INFO_NAME_RIGHT_X, yPos);
       }
     }
   }
