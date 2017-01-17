@@ -9,8 +9,8 @@ public enum StrokeColorType {
 
 public class Zone6 extends ZumoInfo {
   
-  static final float FIRST_START_X = 450.0; // 最初のx軸起点
-  static final float FIRST_START_Y = 550.0; // 最初のy軸起点
+  static final float FIRST_START_X = 500.0; // 最初のx軸起点
+  static final float FIRST_START_Y = 500.0; // 最初のy軸起点
   private float radius_distance_value = 1.0; // 三角関数の半径
   private float xPrev, yPrev; // 前回の起点
   private int redCount = 0; // 赤色を通過した回数
@@ -35,8 +35,8 @@ public class Zone6 extends ZumoInfo {
     // 線の色を黒
     stroke(0);
     // 座標軸の生成
-    line(300, 550, 1000, 550); // x軸
-    line(450, 0, 450, 700); // y軸
+    line(300, 500, 1000, 500); // x軸
+    line(500, 0, 500, 700); // y軸
   }
   
   
