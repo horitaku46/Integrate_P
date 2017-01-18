@@ -22,9 +22,9 @@ public final class SettingConst {
 int zoneNumber_G, mode_G;
 int sec_G; // 経過時間（秒）
 int max_r_G, max_g_G, max_b_G, min_r_G, min_g_G, min_b_G; // RGBキャリブレーション値
-float max_x_G, max_y_G, min_x_G, min_y_G; // 地磁気センサキャリブレーション値
+int max_x_G, max_y_G, min_x_G, min_y_G; // 地磁気センサキャリブレーション値
 int red_G, green_G, blue_G; // RGB
-float direction_G; // Zumoの方向（0~360）
+int direction_G; // Zumoの方向（0~360）
 
 // Zone4
 int detectColor_G; // ポイントで検知した色
@@ -172,7 +172,7 @@ int mapRGB(int rgb) {
 // Arduinoから受信する関数
 void serialEvent(Serial p) {
   
-  int h, l, d;
+  int h, l;
   
   // 受け取れるデータの個数
   if ( p.available() >= 30 ) {
@@ -223,32 +223,28 @@ void serialEvent(Serial p) {
       // 地磁気センサのキャリブレーション値
       h = p.read();
       l = p.read(); 
-      d = (h << 8) + l;
-      if ( d > 32767 ) {
-        d -= 65536;
+      max_x_G = (int)((h << 8) + l);
+      if ( max_x_G > 32767 ) {
+        max_x_G -= 65536;
       }
-      max_x_G = (float)d / 100.0;
       h = p.read(); 
       l = p.read();
-      d = (h << 8) + l;
-      if ( d > 32767 ) {
-        d -= 65536;
+      max_y_G = (int)((h << 8) + l);
+      if ( max_y_G > 32767 ) {
+        max_y_G -= 65536;
       }
-      max_y_G = (float)d / 100.0;
       h = p.read(); 
       l = p.read();
-      d = (h << 8) + l;
-      if ( d > 32767 ) {
-        d -= 65536;
+      min_x_G = (int)((h << 8) + l);
+      if ( min_x_G > 32767 ) {
+        min_x_G -= 65536;
       }
-      min_x_G = (float)d / 100.0;
       h = p.read();
       l = p.read();
-      d = (h << 8) + l;
-      if ( d > 32767 ) {
-        d -= 65536;
+      min_y_G = (int)((h << 8) + l);
+      if ( min_y_G > 32767 ) {
+        min_y_G -= 65536;
       }
-      min_y_G = (float)d / 100.0;
       
       // RGB(255まで)
       red_G = mapRGB(p.read());
@@ -258,11 +254,10 @@ void serialEvent(Serial p) {
       // Zumoの方向
       h = p.read();
       l = p.read();
-      d = (h << 8) + l;
-      if ( d > 32767 ) {
-        d -= 65536;
+      direction_G = (int)((h << 8) + l);
+      if ( direction_G > 32767 ) {
+        direction_G -= 65536;
       }
-      direction_G = (float)d / 100.0;
       
       // Zone4でのポイントで検知した色
       detectColor_G = p.read();
@@ -273,17 +268,14 @@ void serialEvent(Serial p) {
       //print("TIME = ");
       //println(sec);
       
-      //print("max_r, max_g, max_b, min_r, min_g, min_b = ");
-      //println(max_r_G, max_g_G, max_b_G, min_r_G, min_g_G, min_b_G);
+      print("max_r, max_g, max_b, min_r, min_g, min_b = ");
+      println(max_r_G, max_g_G, max_b_G, min_r_G, min_g_G, min_b_G);
       
-      //print("max_x, max_y, min_x, min_y = ");
-      //println(max_x_G, max_y_G, min_x_G, min_y_G);
+      print("max_x, max_y, min_x, min_y = ");
+      println(max_x_G, max_y_G, min_x_G, min_y_G);
       
       //print("RGB = ");
       //println(red_G, green_G, blue_G);
-      
-      //print("SPEED(LEFT,RIGHT) = ");
-      //println(motorL_G, motorR_G);
       
       //print("DIRECTION = ");
       //println(direction_G);
